@@ -1,0 +1,41 @@
+.shine-border {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+  
+  .shine-border::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      from 0deg,
+      #a07cfe,
+      #fe8fb5,
+      #ffbe7b,
+      #a07cfe
+    );
+    animation: rotate 6s linear infinite;
+    z-index: 0;
+    opacity: 0.5;
+  }
+  
+  .shine-border-inner {
+    position: relative;
+    z-index: 1;
+    background: white;
+    border-radius: 0.75rem;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

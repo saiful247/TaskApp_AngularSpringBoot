@@ -1,0 +1,35 @@
+.interactive-hover-button {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background-color: #3b82f6; /* Tailwind blue-500 */
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    transition: background 0.3s;
+  }
+  
+  .interactive-hover-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(120deg, #a07cfe, #fe8fb5, #ffbe7b);
+    transform: skewX(-20deg);
+    transition: left 0.5s ease-in-out;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  
+  .interactive-hover-button:hover::before {
+    left: 0%;
+  }
+  
+  .interactive-hover-button-content {
+    position: relative;
+    z-index: 1;
+  }
+  
