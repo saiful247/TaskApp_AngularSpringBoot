@@ -1,11 +1,10 @@
 <div class="p-6 relative">
-    <!-- Card overlay with soft blur (not dark) -->
-    <div *ngIf="selectedTask" class="absolute inset-0 bg-transparent flex justify-center items-start pt-20 z-10">
 
+  <!-- 🔍 Task Preview Card -->
+  <div *ngIf="selectedTask" class="absolute inset-0 bg-transparent flex justify-center items-start pt-20 z-10">
     <div class="bg-white border border-gray-300 shadow-lg rounded-2xl p-6 max-w-md w-[90%] relative animate-fade-in">
       <button class="absolute top-2 right-3 text-gray-400 hover:text-red-500 text-xl font-bold" (click)="closeCard()">×</button>
       <h3 class="text-lg font-semibold text-center mb-3">Task Preview</h3>
-  
       <div class="space-y-1 text-sm text-gray-700">
         <p><span class="font-medium">ID:</span> {{ selectedTask.id }}</p>
         <p><span class="font-medium">Title:</span> {{ selectedTask.title }}</p>
@@ -15,47 +14,74 @@
     </div>
   </div>
 
-  
-  
-  
-    <!-- 3D Table -->
-    <div class="overflow-x-auto shadow-2xl rounded-xl bg-white">
-      <table class="min-w-full text-sm text-left border border-gray-300">
-        <thead class="bg-blue-600 text-white rounded-t-xl">
-          <tr>
-            <th class="px-4 py-2">ID</th>
-            <th class="px-4 py-2">Title</th>
-            <th class="px-4 py-2">Description</th>
-            <th class="px-4 py-2">Status</th>
-            <th class="px-4 py-2">Created At</th>
-            <th class="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr 
-  *ngFor="let task of tasks" 
-  (click)="selectTask(task.id)"
-  class="hover:bg-green-100 cursor-pointer transition-colors duration-200"
->
+  <!-- 📋 Task Table or Empty State -->
+  <div *ngIf="tasks.length > 0; else noData" class="overflow-x-auto shadow-2xl rounded-xl bg-white">
+    <table class="min-w-full text-sm text-left border border-gray-300">
+      <thead class="bg-blue-600 text-white rounded-t-xl">
+        <tr>
+          <th class="px-4 py-2">ID</th>
+          <th class="px-4 py-2">Title</th>
+          <th class="px-4 py-2">Description</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Created At</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr 
+          *ngFor="let task of tasks" 
+          (click)="selectTask(task.id)"
+          class="hover:bg-green-100 cursor-pointer transition-colors duration-200"
+        >
+          <td class="px-4 py-2">{{ task.id }}</td>
+          <td class="px-4 py-2">{{ task.title }}</td>
+          <td class="px-4 py-2">{{ task.description }}</td>
+          <td class="px-4 py-2">
+            <span
+              class="text-white text-xs font-semibold px-3 py-1 rounded-full"
+              [ngClass]="{
+                'bg-gray-500': task.status === 'TO_DO',
+                'bg-orange-500': task.status === 'IN_PROGRESS',
+                'bg-green-500': task.status === 'DONE'
+              }"
+            >
+              {{ task.status }}
+            </span>
+          </td>
+          
+          <td class="px-4 py-2">{{ task.createdAt }}</td>
+          <td class="px-4 py-2 space-x-2">
+            <button (click)="updateTask(task.id); $event.stopPropagation()" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Update</button>
+            <button (click)="deleteTask(task.id); $event.stopPropagation()" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-
-            <td class="px-4 py-2">{{ task.id }}</td>
-            <td class="px-4 py-2">{{ task.title }}</td>
-            <td class="px-4 py-2">{{ task.description }}</td>
-            <td class="px-4 py-2">{{ task.status }}</td>
-            <td class="px-4 py-2">{{ task.createdAt }}</td>
-            <td class="px-4 py-2 space-x-2">
-              <button (click)="updateTask(task.id); $event.stopPropagation()" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Update</button>
-              <button (click)="deleteTask(task.id); $event.stopPropagation()" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- ❌ No Data Template -->
+  <ng-template #noData>
+    <div class="flex flex-col items-center justify-center py-12 bg-white rounded-xl shadow-md">
+      <img
+        src="https://staticmania.cdn.prismic.io/staticmania/16994ca5-ac01-4868-8ade-1b9e276ccdb3_Property+1%3DFolder_+Property+2%3DLg.svg"
+        alt="No Data"
+        class="w-72 mb-6"
+      />
+      <h2 class="text-xl font-semibold text-gray-800 mb-2">No Data Found</h2>
+      <p class="text-sm text-gray-500 text-center mb-4 max-w-md">
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
+      </p>
+      <button 
+        routerLink="/"
+        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        Go to Home
+      </button>
     </div>
-    <!-- Custom Delete Confirmation Alert -->
-    <div *ngIf="showDeleteConfirm" class="absolute inset-0 bg-transparent flex items-center justify-center z-20">
+  </ng-template>
 
+  <!-- ❗ Custom Delete Confirmation Alert -->
+  <div *ngIf="showDeleteConfirm" class="absolute inset-0 bg-transparent flex items-center justify-center z-20">
     <div class="bg-white rounded-2xl shadow-xl w-80 p-5 text-center">
       <h2 class="text-lg font-semibold mb-2">Are you sure you want to delete this?</h2>
       <p class="text-sm text-gray-600 mb-5">This action cannot be undone.</p>
@@ -69,6 +95,5 @@
       </div>
     </div>
   </div>
-  
-  </div>
-  
+
+</div>
