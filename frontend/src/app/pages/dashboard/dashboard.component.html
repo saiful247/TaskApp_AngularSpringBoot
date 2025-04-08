@@ -1,6 +1,6 @@
 <div class="p-6 relative">
 
-  <!-- 🔍 Task Preview Card -->
+  <!--Task Preview Card -->
   <div *ngIf="selectedTask" class="absolute inset-0 bg-transparent flex justify-center items-start pt-20 z-10">
     <div class="bg-white border border-gray-300 shadow-lg rounded-2xl p-6 max-w-md w-[90%] relative animate-fade-in">
       <button class="absolute top-2 right-3 text-gray-400 hover:text-red-500 text-xl font-bold" (click)="closeCard()">×</button>
@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <!-- 📋 Task Table or Empty State -->
+  <!--Task Table or Empty State -->
   <div *ngIf="tasks.length > 0; else noData" class="overflow-x-auto shadow-2xl rounded-xl bg-white">
     <table class="min-w-full text-sm text-left border border-gray-300">
       <thead class="bg-blue-600 text-white rounded-t-xl">
@@ -59,7 +59,7 @@
     </table>
   </div>
 
-  <!-- ❌ No Data Template -->
+  <!--No Data Template -->
   <ng-template #noData>
     <div class="flex flex-col items-center justify-center py-12 bg-white rounded-xl shadow-md">
       <img
@@ -80,7 +80,7 @@
     </div>
   </ng-template>
 
-  <!-- ❗ Custom Delete Confirmation Alert -->
+  <!--Custom Delete Confirmation Alert -->
   <div *ngIf="showDeleteConfirm" class="absolute inset-0 bg-transparent flex items-center justify-center z-20">
     <div class="bg-white rounded-2xl shadow-xl w-80 p-5 text-center">
       <h2 class="text-lg font-semibold mb-2">Are you sure you want to delete this?</h2>
